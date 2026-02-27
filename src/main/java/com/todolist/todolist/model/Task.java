@@ -1,31 +1,35 @@
 package com.todolist.todolist.model;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 
-@Entity
+@Entity  // This tells Spring that this class will be stored in a database
 public class Task {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
-    private String title;
-    private String description;
-    private boolean completed;
+    @Id  // This marks this field as the primary key
+    @GeneratedValue(strategy = GenerationType.IDENTITY)  // Database will auto-generate IDs
+    private Long id;  // Unique identifier for each task
 
-    // Standard constructors (no-arg and with fields)
+    @Column(nullable = false)  // This field cannot be empty in database
+    private String title;  // Task title (e.g., "Buy groceries")
+
+    private String description;  // Task description (e.g., "Buy milk, eggs, bread")
+
+    private boolean completed;  // Whether the task is done (true/false)
+
+    // Constructor with no parameters (required by JPA)
     public Task() {
     }
 
+    // Constructor with parameters (convenient for creating tasks)
     public Task(String title, String description, boolean completed) {
         this.title = title;
         this.description = description;
         this.completed = completed;
     }
 
-    // Getters and Setters for all fields
+    // Getters and Setters - these allow other classes to access private fields
+
+
     public Long getId() {
         return id;
     }
