@@ -1,19 +1,22 @@
 package com.todolist.todolist.repository;
 
 import com.todolist.todolist.model.Task;
+import com.todolist.todolist.model.User;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 import java.util.List;
+import java.util.Optional;
 
-@Repository  // Marks this as a repository component
+@Repository
 public interface TaskRepository extends JpaRepository<Task, Long> {
-    // JpaRepository provides methods like:
-    // - findAll() - get all tasks
-    // - findById(id) - get one task
-    // - save(task) - add or update a task
-    // - deleteById(id) - delete a task
-    // - count() - count all tasks
 
-    // Custom method: find tasks by their completed status
-    List<Task> findByCompleted(boolean completed);
+    List<Task> findByUser(User user);
+
+    List<Task> findByUserAndCompleted(User user, boolean completed);
+
+    Optional<Task> findByIdAndUser(Long id, User user);
+
+    void deleteByIdAndUser(Long id, User user);
+
+    boolean existsByIdAndUser(Long id, User user);
 }

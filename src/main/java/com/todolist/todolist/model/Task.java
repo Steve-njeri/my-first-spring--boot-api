@@ -1,35 +1,38 @@
 package com.todolist.todolist.model;
 
 import jakarta.persistence.*;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
-@Entity  // This tells Spring that this class will be stored in a database
+@Entity
+@Table(name = "tasks")
 public class Task {
 
-    @Id  // This marks this field as the primary key
-    @GeneratedValue(strategy = GenerationType.IDENTITY)  // Database will auto-generate IDs
-    private Long id;  // Unique identifier for each task
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
 
-    @Column(nullable = false)  // This field cannot be empty in database
-    private String title;  // Task title (e.g., "Buy groceries")
+    @Column(nullable = false)
+    private String title;
 
-    private String description;  // Task description (e.g., "Buy milk, eggs, bread")
+    private String description;
 
-    private boolean completed;  // Whether the task is done (true/false)
+    private boolean completed;
 
-    // Constructor with no parameters (required by JPA)
-    public Task() {
-    }
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "user_id", nullable = false)
+    @JsonIgnore
+    private User user;
 
-    // Constructor with parameters (convenient for creating tasks)
-    public Task(String title, String description, boolean completed) {
+    public Task() {}
+
+    public Task(String title, String description, boolean completed, User user) {
         this.title = title;
         this.description = description;
         this.completed = completed;
+        this.user = user;
     }
 
-    // Getters and Setters - these allow other classes to access private fields
-
-
+    // Getters and Setters
     public Long getId() {
         return id;
     }
@@ -60,5 +63,13 @@ public class Task {
 
     public void setCompleted(boolean completed) {
         this.completed = completed;
+    }
+
+    public User getUser() {
+        return user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
     }
 }
